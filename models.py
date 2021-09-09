@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import (
-    BaseUserManager, AbstractBaseUser, Group
+    BaseUserManager, AbstractBaseUser, Group, PermissionsMixin
 )
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils.translation import gettext_lazy as _
@@ -34,7 +34,7 @@ class UserManager(BaseUserManager):
 class Group(Group):
 	group_email = models.EmailField()
 
-class User(AbstractBaseUser):
+class User(PermissionsMixin, AbstractBaseUser):
 
     username_validator = UnicodeUsernameValidator()
 
