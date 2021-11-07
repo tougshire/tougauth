@@ -1,11 +1,28 @@
+from .models import TougshireAuthUser, TougshireAuthGroup
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin, GroupAdmin
-from .models import User, Group
-from django.contrib.auth.models import Group as ContribGroup
+from django.contrib.auth.models import Group
+from django.utils.translation import gettext, gettext_lazy as _
 
-admin.site.register(User, UserAdmin)
 
-admin.site.unregister(ContribGroup)
+class TougshireAuthUserAdmin(UserAdmin):
+    #copies of UserAdmin fieldsets and search_fields, but with display_name added, and a modified list_display
+    fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name', 'display_name', 'email')}),
+        (_('Permissions'), {
+            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
+        }),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+    )
+    list_display=['username', 'get_display_name', 'email']
+    search_fields = ('username', 'first_name', 'last_name', 'display_name', 'email')
 
-admin.site.register(Group, GroupAdmin)
+admin.site.register(TougshireAuthUser, TougshireAuthUserAdmin)
 
+admin.site.unregister(Group)
+
+class TougshireAuthGroupAdmin(GroupAdmin):
+    pass
+
+admin.site.register(TougshireAuthGroup, TougshireAuthGroupAdmin)
