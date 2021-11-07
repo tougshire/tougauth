@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 
 
-class TougAuthConfig(AppConfig):
+class TougshireAuthConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'tougauth'
-    verbose_name = 'User Administration'
+    name = 'tougshire_auth'
+    verbose_name = 'Users and Groups'
