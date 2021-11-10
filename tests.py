@@ -1,4 +1,5 @@
 from .models import TougshireAuthGroup, TougshireAuthUser
+from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.models import Group, Permission
 from django.shortcuts import get_object_or_404
@@ -62,3 +63,64 @@ class TestAdmin(TestCase):
     def test_tougshire_group_admin_model_is_groupadmin(self):
         self.assertEqual(admin.site._registry[TougshireAuthGroup].__str__()[-10:], 'GroupAdmin')
 
+class TestUserName(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        TougshireAuthUser.objects.create(
+            username="usealpha",
+            first_name="Alpha",
+            last_name="User",
+            display_name="Alf",
+            email="usealpha@tougshire.com"
+        )
+
+    def test_name_with_no_setting(self):
+        if hasattr(settings, 'AUTH_USER_DISPLAY'):
+            delattr(settings, 'AUTH_USER_DISPLAY')
+        usealpha = TougshireAuthUser.objects.first()
+        self.assertEqual(usealpha.__str__(), 'Alf')
+
+    def test_name_with_empty_setting(self):
+        settings.AUTH_USER_DISPLAY = ''
+        usealpha = TougshireAuthUser.objects.first()
+        self.assertEqual(usealpha.__str__(), 'Alf')
+
+    def test_name_with_bad_setting(self):
+        settings.AUTH_USER_DISPLAY = 'bad'
+        usealpha = TougshireAuthUser.objects.first()
+        self.assertEqual(usealpha.__str__(), 'Alf')
+
+    def test_name_with_name_setting(self):
+        settings.AUTH_USER_DISPLAY = 'name'
+        usealpha = TougshireAuthUser.objects.first()
+        self.assertEqual(usealpha.__str__(), 'Alf')
+
+    def test_name_with_firstname_setting(self):
+        settings.AUTH_USER_DISPLAY = 'first_name'
+        usealpha = TougshireAuthUser.objects.first()
+        self.assertEqual(usealpha.__str__(), 'Alpha')
+
+    def test_name_with_lastname_setting(self):
+        settings.AUTH_USER_DISPLAY = 'last_name'
+        usealpha = TougshireAuthUser.objects.first()
+        self.assertEqual(usealpha.__str__(), 'User')
+
+    def test_name_with_email_setting(self):
+        settings.AUTH_USER_DISPLAY = 'email'
+        usealpha = TougshireAuthUser.objects.first()
+        self.assertEqual(usealpha.__str__(), 'usealpha@tougshire.com')
+
+    def test_first_name_last_name_if_no_display_name(self):
+        if hasattr(settings, 'AUTH_USER_DISPLAY'):
+            delattr(settings, 'AUTH_USER_DISPLAY')
+        usealpha = TougshireAuthUser.objects.first()
+        usealpha.display_name = ''
+        self.assertEqual(usealpha.__str__(), 'Alpha User')
+
+    def test_stripped_first_name_if_no_display_name(self):
+        if hasattr(settings, 'AUTH_USER_DISPLAY'):
+            delattr(settings, 'AUTH_USER_DISPLAY')
+        usealpha = TougshireAuthUser.objects.first()
+        usealpha.display_name = ''
+        usealpha.last_name = ''
+        self.assertEqual(usealpha.__str__(), 'Alpha')
