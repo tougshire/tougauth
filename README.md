@@ -12,6 +12,7 @@ My intent is that this not be used as-is.  My intent is for you to do the follow
 * rename this to your project name, followed by '\_auth',
 * rename templates/t<i></i>ougshire\_auth/ the same way
 * change all occurances of 'T<i></i>ougshire' and 't<i></i>ougshire' with your project name, capitalized appropriately.
+
 Then hack it to suit your purposes.  But that's your choice.
 
 Make sure you add this app to settings.INSTALLED\_APPS and the user model as settings.AUTH\_USER\_MODEL
@@ -20,6 +21,6 @@ INSTALLED\_APPS = \[\
 ... \
 'tougshire\_auth.apps.TougshireAuthConfig',\
 ... \
-\]\
+\]
 
 AUTH\_USER\_MODEL = 'tougshire\_auth.TougshireAuthUser'
