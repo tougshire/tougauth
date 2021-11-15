@@ -32,4 +32,4 @@ Make sure you add this app to settings.INSTALLED\_APPS and the user model as set
 
     AUTH\_USER\_MODEL = 'tougshire\_auth.TougshireAuthUser'
 
-Note: in this markdown, I used \<z\> and \<\/z\> within T<z></z>ougshire and t<z></z>ougshire to prevent accidental replacement
+Note: in the in this document, I used \<z\> and \<\/z\> tags within T<z></z>ougshire and t<z></z>ougshire to prevent accidental replacement
