@@ -1,0 +1,16 @@
+{% extends './_base.html' %}
+{% block content %}
+<h1>{{ object }}</h1>
+<form method='POST'>
+{% csrf_token %}
+{% for field in form%}
+<div>
+<div class="user_profile_label"><label for="field.id_for_label">{{ field.label }}</label></div>
+<div class="user_profile_field">{{ field }}</div>
+<div class="user_profile_help">{{ field.help_text }}</div>
+</div>
+{% endfor %}
+<div><button type="submit">Submit</button></div>
+</form>
+<div class="password_reset_info">To change your password use the <a href="{% url 'password_change' %}">change form</a><div>
+{% endblock %}

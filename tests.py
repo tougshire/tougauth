@@ -143,7 +143,6 @@ class TestUserName(TestCase):
             template_names.append(template.name)
         self.assertNotIn('tougshire_auth/profile_detail.html', template_names)
 
-
     def test_login(self):
         TougshireAuthUser.objects.create_user(username='admin', password='admin', is_superuser=True)
         client = Client()
