@@ -1,10 +1,33 @@
-<html>
+{% load static %}
+{% load url_utils %}
+<!DOCTYPE html>
+<html lang='en'>
 <head>
-<title>Tougshire Accounts</title>
+<title>Profile</title>
+<link rel="stylesheet" href="{% static 'tougshire_auth/tougshire_auth.css' %}">
 </head>
 <body>
-<h1>Tougshire Accounts</h1>
-{% block content %}
+{% block menu %}
+  <div class="menu menu-top">
+    {% url_if 'home' as url_if %}
+    {% if url_if > '' %}
+      <div class="menu-item">
+        <a href="{{ url_if }}">Home</a>
+      </div>
+    {% endif %}
+
+    {% url_if 'profile' as url_if %}
+    {% if url_if > '' %}
+      <div class="menu-item">
+        <a href="{{ url_if }}">{{ user.username }}</a> /
+        <a href="{% url 'logout' %}">Logout</a>
+      </div>
+    {% else %}
+      <div class="menu-item"><a href="{% url 'logout' %}">Logout {{ user.username }}</a></div>
+    {% endif %}
+  </div>
 {% endblock %}
+{% block content %}{% endblock %}
+{% block bottomscript %}{% endblock %}
 </body>
 </html>
