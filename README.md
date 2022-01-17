@@ -1,4 +1,4 @@
-# tougauth
+# tougshire_auth
 
 A simple Django app for following Django's recommendation to create a custom user model even if no changes from the provided user model are currently needed.  But I did add a couple of things
 
@@ -8,12 +8,12 @@ I added one field, display\_name, which can be left blank.  I added a property, 
 
 This app also creates a custom group which shows up in the same admin heading as the custom user
 
-My intent is that this not be used as-is.  My intent is for you to do the following:
-* rename this to your project name, followed by '\_auth',
-* rename templates/t<i></i>ougshire\_auth/ the same way
-* change all occurances of 'T<i></i>ougshire' and 't<i></i>ougshire' with your project name, capitalized appropriately.
+You might want to copy or fork this code then modify it to create your own custom user model app.  Here's what I do:
 
-Then hack it to suit your purposes.  But that's your choice.
+* rename this to the project name, followed by '\_auth' - so if my project is named "example" then instead of tougs<wbr>hire_auth it will be example_auth
+* rename templates/toug<wbr>shire\_auth/ the same way
+* change all occurances of 'Toug<wbr>shire' and 'toug<wbr>shire' with the project name, capitalized appropriately.
+
 
 Make sure you add this app to settings.INSTALLED\_APPS and the user model as settings.AUTH\_USER\_MODEL
 
