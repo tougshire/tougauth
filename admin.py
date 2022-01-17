@@ -4,6 +4,9 @@ from django.contrib.auth.admin import UserAdmin, GroupAdmin
 from django.contrib.auth.models import Group
 from django.utils.translation import gettext, gettext_lazy as _
 
+@admin.display(description="Active/Staff/Super")
+def activestaffsuper(obj):
+    return "{} / {} / {}".format(['No ','Yes'][obj.is_active], ['No ','Yes'][obj.is_staff], ['No ','Yes'][obj.is_superuser])
 
 class TougshireAuthUserAdmin(UserAdmin):
     #copies of UserAdmin fieldsets and search_fields, but with display_name added, and a modified list_display
@@ -15,7 +18,7 @@ class TougshireAuthUserAdmin(UserAdmin):
         }),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
-    list_display=['name', 'username', 'email', 'is_staff', 'is_superuser']
+    list_display=['name', 'username', 'email', activestaffsuper]
     search_fields = ('username', 'first_name', 'last_name', 'display_name', 'email')
 
 admin.site.register(TougshireAuthUser, TougshireAuthUserAdmin)
