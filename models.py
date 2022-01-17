@@ -5,9 +5,22 @@ from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
 class TougshireAuthGroup(Group):
+    short_name = models.CharField(
+        'short name',
+        max_length=3,
+        blank=True,
+        help_text='A short, (preferably single-letter) designation for the group used in list display'
+    )
+
     class Meta:
         app_label = 'tougshire_auth'
         verbose_name = 'group'
+
+    def __str__(self):
+        if self.short_name:
+            return '{} ({})'.format(self.name, self.short_name)
+        else:
+            return self.name
 
 class TougshireAuthUser(AbstractUser):
     display_name = models.CharField(
