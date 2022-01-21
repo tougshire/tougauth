@@ -5,8 +5,10 @@ from django.contrib.auth import authenticate, login
 from django.views.generic.edit import UpdateView
 from django.views.generic.detail import DetailView
 from .models import TougshireAuthUser
+from .forms import ProfileForm
 from django.urls import reverse_lazy
 from django.core.exceptions import PermissionDenied
+from django.conf import settings
 
 class ProfileDetail(DetailView):
     model = TougshireAuthUser
@@ -17,10 +19,11 @@ class ProfileDetail(DetailView):
             return self.request.user
         raise PermissionDenied
 
+
 class ProfileUpdate(UpdateView):
     model = TougshireAuthUser
     template_name = 'tougshire_auth/profile_form.html'
-    fields=['username']
+    form_class = ProfileForm
     def get_object(self):
         if(self.request.user.pk):
             return self.request.user
