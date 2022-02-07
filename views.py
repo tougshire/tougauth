@@ -19,6 +19,14 @@ class ProfileDetail(DetailView):
             return self.request.user
         raise PermissionDenied
 
+    def get_context_data(self, **kwargs):
+
+        context_data = super().get_context_data(**kwargs)
+
+        if hasattr(settings, 'TOUGSHIRE_AUTH_MENU_FILE'):
+            context_data['menufile'] = settings.TOUGSHIRE_AUTH_MENU_FILE
+
+        return context_data
 
 class ProfileUpdate(UpdateView):
     model = TougshireAuthUser
@@ -31,3 +39,12 @@ class ProfileUpdate(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('tougshire_user_profile')
+
+    def get_context_data(self, **kwargs):
+
+        context_data = super().get_context_data(**kwargs)
+
+        if hasattr(settings, 'TOUGSHIRE_AUTH_MENU_FILE'):
+            context_data['menufile'] = settings.TOUGSHIRE_AUTH_MENU_FILE
+
+        return context_data
