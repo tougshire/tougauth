@@ -1,39 +1,30 @@
 {% load static %}
 {% load url_utils %}
+{% load touglates_tags %}
+
 <!DOCTYPE html>
 <html lang='en'>
 <head>
-<title>Profile</title>
-<link rel="stylesheet" href="{% static 'libtekin/libtekin.css' %}">
+<title>Library Technical Inventory</title>
+{% project_css_file as glocssfile %}
+{% if glocssfile %}
+  <link rel="stylesheet" href="{% static glocssfile %}">
+{% endif %}
+<link rel="stylesheet" href="{% static 'wishlist/wishlist.css' %}">
 </head>
 <body>
+  {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 {% block menu %}
-  {% if menufile %}
-    {% include menufile %}
-  {% else %}
-    <div class="menu menu-top">
-      {% url_if 'home' as url_if %}
-      {% if url_if > '' %}
-        <div class="menu-item">
-          <a href="{{ url_if }}">Home</a>
-        </div>
-      {% endif %}
-
-      {% url_if 'profile' as url_if %}
-      {% if user.username %}
-        <div class="menu-item">
-          {% if url_if > '' %}
-            <a href="{{ url_if }}">{{ user.username }}</a>
-          {% else %}
-            {{ user.username }}
-          {% endif %}
-          <a href="{% url 'logout' %}">Logout</a>
-        </div>
-      {% else %}
-        <div class="menu-item"><a href="{% url 'login' %}">Login</a></div>
-      {% endif %}
-    </div>
-  {% endif %}
+{% project_include_file as includefile %}
+{% if includefile %}
+  {% include includefile %}
+{% endif %}
 {% endblock %}
 {% block content %}{% endblock %}
 {% block bottomscript %}{% endblock %}
