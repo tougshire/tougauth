@@ -1,6 +1,6 @@
 from django.core.exceptions import FieldDoesNotExist
 from django.db import models
-from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.contrib.auth.models import AbstractUser, Group, Permission, UserManager
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
@@ -21,6 +21,20 @@ class TougshireAuthGroup(Group):
             return '{} ({})'.format(self.name, self.short_name)
         else:
             return self.name
+
+class OptionsUserManager(UserManager):
+
+    def get_by_natural_key(self, username):
+        print('tp 2252l18')
+        if hasattr(settings, 'AUTH_USER_CASE_INSENSITIVE'):
+            print('tp 2252l17')
+            if settings.AUTH_USER_CASE_INSENSITIVE == True:
+                case_insensitive_username_field = '{}__iexact'.format(self.model.USERNAME_FIELD)
+                print('tp 2252l16', self.get(**{case_insensitive_username_field: username}))
+
+                return self.get(**{case_insensitive_username_field: username})
+
+        return super().get_by_natural_key(username)
 
 class TougshireAuthUser(AbstractUser):
     display_name = models.CharField(
@@ -49,3 +63,5 @@ class TougshireAuthUser(AbstractUser):
                     pass
 
         return self.name
+
+    objects = OptionsUserManager()
