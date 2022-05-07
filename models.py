@@ -25,12 +25,10 @@ class TougshireAuthGroup(Group):
 class OptionsUserManager(UserManager):
 
     def get_by_natural_key(self, username):
-        print('tp 2252l18')
         if hasattr(settings, 'AUTH_USER_CASE_INSENSITIVE'):
             print('tp 2252l17')
             if settings.AUTH_USER_CASE_INSENSITIVE == True:
                 case_insensitive_username_field = '{}__iexact'.format(self.model.USERNAME_FIELD)
-                print('tp 2252l16', self.get(**{case_insensitive_username_field: username}))
 
                 return self.get(**{case_insensitive_username_field: username})
 
