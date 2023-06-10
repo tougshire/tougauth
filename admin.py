@@ -1,4 +1,4 @@
-from .models import TougshireAuthUser, TougshireAuthGroup
+from .models import TougshireAuthUser
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin, GroupAdmin
 from django.contrib.auth.models import Group
@@ -14,8 +14,7 @@ def group_letters(obj):
 
     chars=''
     for group in obj.groups.all():
-        if group.tougshireauthgroup is not None:
-            chars = chars + group.tougshireauthgroup.short_name.title()
+        chars = chars + group.name
 
     return chars
 
@@ -29,7 +28,7 @@ class GroupFilter(admin.SimpleListFilter):
     parameter_name = 'groups__id__exact'
 
     def lookups(self, request, model_admin):
-        return  [(group.id,  group.__str__) for group in TougshireAuthGroup.objects.all()] + [('-', '-')]
+        return  [(group.id,  group.__str__) for group in Group.objects.all()] + [('-', '-')]
 
     def queryset(self, request, queryset):
 
@@ -59,11 +58,3 @@ class TougshireAuthUserAdmin(UserAdmin):
 
 admin.site.register(TougshireAuthUser, TougshireAuthUserAdmin)
 
-admin.site.unregister(Group)
-
-
-class TougshireAuthGroupAdmin(GroupAdmin):
-    pass
-
-
-admin.site.register(TougshireAuthGroup, TougshireAuthGroupAdmin)
