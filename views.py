@@ -51,7 +51,10 @@ class ProfileUpdate(UpdateView):
         return context_data
 
 def register(request):
-    if settings.TOUGSHIRE_AUTH['allow_registration']:
+
+    allow_registration = hasattr(settings,'TOUGSHIRE_AUTH') and 'allow_registration' in settings.TOUGSHIRE_AUTH and settings.TOUGSHIRE_AUTH['allow_registration'] == True
+     
+    if allow_registration:
         if request.method == "POST":
             form = RegisterForm(request.POST)
             if form.is_valid():
