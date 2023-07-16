@@ -1,14 +1,15 @@
 from django.core.exceptions import PermissionDenied
 from django.http.response import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login
 from django.views.generic.edit import UpdateView
 from django.views.generic.detail import DetailView
 from .models import TougshireAuthUser
-from .forms import ProfileForm
-from django.urls import reverse_lazy
+from .forms import ProfileForm, RegisterForm
+from django.urls import reverse, reverse_lazy
 from django.core.exceptions import PermissionDenied
 from django.conf import settings
+from django.contrib import messages
 
 class ProfileDetail(DetailView):
     model = TougshireAuthUser
@@ -48,3 +49,20 @@ class ProfileUpdate(UpdateView):
             context_data['menufile'] = settings.TOUGSHIRE_AUTH_MENU_FILE
 
         return context_data
+
+def register(request):
+    if settings.TOUGSHIRE_AUTH['allow_registration']:
+        if request.method == "POST":
+            form = RegisterForm(request.POST)
+            if form.is_valid():
+                user=form.save()
+                return HttpResponseRedirect(reverse('logout'))
+            else:
+                messages.error(request, "Unsuccessful registration")
+                for error in form.errors:
+                    messages.error(request, error)
+                    messages.error(request, form.errors[ error ])
+
+        form = RegisterForm()
+        return render(request, "tougshire_auth/register.html", {"form":form})
+    return HttpResponse('Registration is disabled')
