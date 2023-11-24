@@ -4,13 +4,11 @@
 {% block content %}
 {% if form.errors %}
     <p>There was a problem with your registration.  Please try again.</p>
-    {% for error in form.errors %}
-        {{ error }}
+    {% for error, message in form.errors.items %}
+        {{ error }}{{ message }}
     {% endfor %}
     {% for field in form.fields %}
-    {% for error in field.errors %} y
-    {{ error }}
-    {% endfor %}
+    {{ field.error_list }}
     {% endfor %}
 {% endif %}
 
