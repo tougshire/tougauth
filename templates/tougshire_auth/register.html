@@ -7,6 +7,11 @@
     {% for error in form.errors %}
         {{ error }}
     {% endfor %}
+    {% for field in form.fields %}
+    {% for error in field.errors %} y
+    {{ error }}
+    {% endfor %}
+    {% endfor %}
 {% endif %}
 
 {% if next %}

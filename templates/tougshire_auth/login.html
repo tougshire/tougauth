@@ -33,5 +33,7 @@
 
 {# Assumes you setup the password_reset view in your URLconf #}
 <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
-
+{% if allow_registration %}
+  <p><a href="{% url 'register' %}{% if next %}?next={{ next }}{% endif %}">Register</a></p>
+{% endif %}
 {% endblock %}
