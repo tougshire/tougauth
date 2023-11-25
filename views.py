@@ -69,6 +69,17 @@ class RegistrationView(RedirectURLMixin, CreateView):
     success_url = reverse_lazy("login")
     template_name = "tougshire_auth/register.html"
 
+    def dispatch(self, request, *args, **kwargs):
+        allow_registration = (
+            hasattr(settings, "TOUGSHIRE_AUTH")
+            and "allow_registration" in settings.TOUGSHIRE_AUTH
+            and settings.TOUGSHIRE_AUTH["allow_registration"] == True
+        )
+        if not allow_registration:
+            raise PermissionDenied("Registration is Disabled")
+
+        return super().dispatch(request, *args, **kwargs)
+
 
 # def register(request):
 
