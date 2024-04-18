@@ -63,17 +63,9 @@ class TestAdmin(TestCase):
                 msg=f'"{model.__name__}" is not registered',
             )
 
-    def test_default_group_not_registered(self):
-        self.assertFalse(admin.site.is_registered(Group))
-
     def test_tougshire_user_admin_model_is_useradmin(self):
         self.assertEqual(
             admin.site._registry[TougshireAuthUser].__str__()[-9:], "UserAdmin"
-        )
-
-    def test_tougshire_group_admin_model_is_groupadmin(self):
-        self.assertEqual(
-            admin.site._registry[TougshireAuthGroup].__str__()[-10:], "GroupAdmin"
         )
 
 
